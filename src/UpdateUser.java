@@ -67,6 +67,7 @@ public class UpdateUser extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Uredi korisnika");
         setMinimumSize(new java.awt.Dimension(1360, 768));
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(1360, 768));

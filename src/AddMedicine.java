@@ -55,6 +55,8 @@ public class AddMedicine extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtProizvodjac = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtRok = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Apoteka");
@@ -79,12 +81,15 @@ public class AddMedicine extends javax.swing.JFrame {
         jLabel5.setText("Cijena(po komadu)");
 
         jLabel6.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
-        jLabel6.setText("Proizvođač");
+        jLabel6.setText("Rok trajanja");
 
         jButton2.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/save.png"))); // NOI18N
         jButton2.setText("Sačuvaj");
         jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jLabel7.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
+        jLabel7.setText("Proizvođač");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,13 +120,16 @@ public class AddMedicine extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCijena)
-                                .addComponent(txtProizvodjac)))))
+                            .addComponent(txtCijena)
+                            .addComponent(txtProizvodjac)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(txtRok, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(365, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -151,11 +159,15 @@ public class AddMedicine extends javax.swing.JFrame {
                     .addComponent(txtCijena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProizvodjac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(txtProizvodjac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(379, Short.MAX_VALUE))
+                .addContainerGap(336, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,9 +186,18 @@ public class AddMedicine extends javax.swing.JFrame {
             String proizvodjac = txtProizvodjac.getText();
             float cijena = Float.parseFloat(txtCijena.getText());
             int kolicina = Integer.parseInt(txtKolicina.getText());
+            SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = txtRok.getDate();
+            String dob = "";
+            if(date != null){
+                dob = dFormat.format(txtRok.getDate());
+            }
             
             if(atc.equals("")){
                 JOptionPane.showMessageDialog(null,"Atc šifra nije unešena!");
+            }
+            else if(dob.equals("")){
+                JOptionPane.showMessageDialog(null,"Rok trajanja lijeka nije unešen!");
             }
             else if(naziv.equals("")){
                 JOptionPane.showMessageDialog(null,"Naziv lijeka nije unešen!");
@@ -193,12 +214,13 @@ public class AddMedicine extends javax.swing.JFrame {
             else{
                 try{
                     Connection con = ConnectionProvider.getCon();
-                    PreparedStatement st = con.prepareStatement("INSERT INTO `lijek`(`atc_sifra`, `naziv`, `cijena`, `proizvodjac`,`na_stanju`) VALUES (?,?,?,?,?)");
+                    PreparedStatement st = con.prepareStatement("INSERT INTO `lijek`(`atc_sifra`, `naziv`, `cijena`, `proizvodjac`,`na_stanju`, `rok_trajanja`) VALUES (?,?,?,?,?,?)");
                     st.setString(1, atc);
                     st.setString(2, naziv);
                     st.setFloat(3, cijena);
                     st.setString(4, proizvodjac);
                     st.setInt(5, kolicina);
+                    st.setString(6,dob);
                     st.executeUpdate();
                     JOptionPane.showMessageDialog(null,"Lijek je dodan u bazu podataka!");
                     txtAtc.setText("");
@@ -206,6 +228,7 @@ public class AddMedicine extends javax.swing.JFrame {
                     txtNaziv.setText("");
                     txtProizvodjac.setText("");
                     txtKolicina.setText("");
+                    txtRok.setDate(null);
 
                 }
                 catch(SQLException sql){
@@ -253,11 +276,13 @@ public class AddMedicine extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField txtAtc;
     private javax.swing.JTextField txtCijena;
     private javax.swing.JTextField txtKolicina;
     private javax.swing.JTextField txtNaziv;
     private javax.swing.JTextField txtProizvodjac;
+    private com.toedter.calendar.JDateChooser txtRok;
     // End of variables declaration//GEN-END:variables
 }

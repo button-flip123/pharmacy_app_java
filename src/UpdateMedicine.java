@@ -62,6 +62,7 @@ public class UpdateMedicine extends javax.swing.JFrame {
         txtKolicina = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 48)); // NOI18N
         jLabel1.setText("Uredi lijekove");
@@ -120,9 +121,10 @@ public class UpdateMedicine extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGap(14, 14, 14)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(33, 33, 33))
-                    .addComponent(jLabel7))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel7))
+                        .addGap(33, 33, 33)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtLijek, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,6 +205,14 @@ public class UpdateMedicine extends javax.swing.JFrame {
                     txtProizvodjac.setText(rs.getString("proizvodjac"));
                     txtKolicina.setText(rs.getString("na_stanju"));
                 }while(rs.next());
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"Lijek ovog ID broja ne postoji!");
+                txtNoviNaziv.setText("");
+                txtATC.setText("");
+                txtCijena.setText("");
+                txtProizvodjac.setText("");
+                txtKolicina.setText("");
             }
             
         }
