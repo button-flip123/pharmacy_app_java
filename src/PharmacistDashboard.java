@@ -54,7 +54,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1360, 760));
+        setPreferredSize(new java.awt.Dimension(1360, 768));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close.png"))); // NOI18N
@@ -77,6 +77,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
         jButton4.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         jButton4.setText("Prodaj lijek");
+        jButton4.addActionListener(this::jButton4ActionPerformed);
         getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 144, -1));
 
         jButton5.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
@@ -102,6 +103,7 @@ public class PharmacistDashboard extends javax.swing.JFrame {
 
         jButton9.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         jButton9.setText("Naruči lijek");
+        jButton9.addActionListener(this::jButton9ActionPerformed);
         getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, 144, -1));
 
         pack();
@@ -153,6 +155,17 @@ public class PharmacistDashboard extends javax.swing.JFrame {
         setVisible(false);
         new UpdateMedicine(username).setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        new OrderMedicine(username).setVisible(true);
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        setVisible(false);
+        new SellMedicine(username).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
